@@ -9,129 +9,105 @@
     "Tables": {
         "Characters": {
             "characters": {
-                "main": true,
+                "master": true,
                 "column": "guid"
             },
             "character_action": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "character_aura": {
-                "main": false,
                 "columns": [ "guid", "caster_guid" ]
             },
             "character_gifts": {
-                "main": false,
                 "columns": [ "guid" ]
             },
-            "character_honmebind": {
-                "main": false,
+            "character_homebind": {
                 "columns": [ "guid" ]
             },
             "character_inventory": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "character_pet": {
-                "main": false,
                 "columns": [ "owner" ]
             },
             "character_queststatus": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "character_reputation": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "character_skills": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "character_social": {
-                "main": false,
                 "columns": [ "guid", "friend" ]
             },
             "character_spell": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "guild": {
-                "main": false,
                 "columns": [ "leaderguid" ]
             },
             "guild_eventlog": {
-                "main": false,
                 "columns": [ "PlayerGuid1", "PlayerGuid2" ]
             },
             "guild_member": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "item_instance": {
-                "main": false,
                 "columns": [ "owner_guid", "creatorGuid", "giftCreatorGuid" ]
             },
             "item_loot": {
-                "main": false,
                 "columns": [ "owner_guid" ]
             },
             "mail": {
-                "main": false,
-                "columns": [ "sender", "reveiver" ]
+                "columns": {
+                    "sender": {
+                        "condition": "AND `slave`.`messageType` = 0"
+                    },
+                    "receiver": {}
+                }
             },
             "mail_items": {
-                "main": false,
                 "columns": [ "receiver" ]
             },
             "pet_aura": {
-                "main": false,
                 "columns": [ "caster_guid" ]
             },
             "petition": {
-                "main": false,
                 "columns": [ "ownerguid" ]
             },
             "petition_sign": {
-                "main": false,
                 "columns": [ "ownerguid", "playerguid" ]
             }
         },
         "Items": {
             "item_instance": {
-                "main": true,
+                "master": true,
                 "column": "guid"
             },
             "character_aura": {
-                "main": false,
                 "columns": [ "item_guid" ]
             },
             "character_gifts": {
-                "main": false,
                 "columns": [ "item_guid" ]
             },
             "character_inventory": {
-                "main": false,
                 "columns": [ "item" ]
             },
             "item_loot": {
-                "main": false,
                 "columns": [ "guid" ]
             },
             "mail_items": {
-                "main": false,
                 "columns": [ "item_guid" ]
             },
             "pet_aura": {
-                "main": false,
                 "columns": [ "item_guid" ]
             },
             "petition": {
-                "main": false,
                 "columns": [ "petitionguid" ]
             },
             "petition_sign": {
-                "main": false,
                 "columns": [ "petitionguid" ]
             }
         }

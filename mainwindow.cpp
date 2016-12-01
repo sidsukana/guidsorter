@@ -42,18 +42,40 @@ MainWindow::MainWindow(QWidget *parent) :
             {
                 QJsonObject table = itr2.value().toObject();
 
-                if (table.value("main").toBool())
+                if (table.value("master").toBool())
                 {
                     m_masterTables[itr.key()] = itr2.key();
                     m_masterColumns[itr2.key()] = table.value("column").toString();
                     continue;
                 }
 
-                QJsonArray tableColumns = table.value("columns").toArray();
-                QStringList columns;
-                for (auto itr3 = tableColumns.constBegin(); itr3 != tableColumns.constEnd(); ++itr3)
-                    columns << (*itr3).toString();
-                m_columns[ColumnPair(itr.key(), itr2.key())] = columns;
+                if (table.value("columns").isObject())
+                {
+                    QJsonObject tableColumns = table.value("columns").toObject();
+                    QStringList columns;
+                    for (auto itr3 = tableColumns.constBegin(); itr3 != tableColumns.constEnd(); ++itr3)
+                    {
+                        columns << itr3.key();
+                        QJsonObject objCol = itr3.value().toObject();
+                        QJsonValue condition = objCol.value("condition");
+                        if (!condition.isUndefined())
+                            m_conditions[StringPair(itr2.key(), itr3.key())] = condition.toString();
+                        else
+                            m_conditions[StringPair(itr2.key(), itr3.key())] = "";
+                    }
+                    m_columns[StringPair(itr.key(), itr2.key())] = columns;
+                }
+                else
+                {
+                    QJsonArray tableColumns = table.value("columns").toArray();
+                    QStringList columns;
+                    for (auto itr3 = tableColumns.constBegin(); itr3 != tableColumns.constEnd(); ++itr3)
+                    {
+                        columns << (*itr3).toString();
+                        m_conditions[StringPair(itr2.key(), (*itr3).toString())] = "";
+                    }
+                    m_columns[StringPair(itr.key(), itr2.key())] = columns;
+                }
 
                 tables << itr2.key();
             }
@@ -159,7 +181,7 @@ void MainWindow::reorderSlaves(QString str)
         for (quint8 i = 0; i < tablesCount; ++i)
         {
             QString table = ui->comboBox_2->itemText(i);
-            QStringList columns = m_columns[ColumnPair(group, table)];
+            QStringList columns = m_columns[StringPair(group, table)];
 
             for (auto& column : columns)
             {
@@ -174,6 +196,8 @@ void MainWindow::reorderSlaves(QString str)
                     }
                 }
 
+                QString condition = m_conditions[StringPair(table, column)];
+
                 db.transaction();
                 QSqlQuery(QString("ALTER TABLE `%0` ADD COLUMN `_%1` %2 DEFAULT 0 NOT NULL AFTER `%1`")
                           .arg(table)
@@ -182,18 +206,20 @@ void MainWindow::reorderSlaves(QString str)
                 QSqlQuery(QString("UPDATE `%0` SET `_%1` = `%1`")
                           .arg(table)
                           .arg(column));
-                QSqlQuery(QString("UPDATE `%0`, `%1` SET `%0`.`_%2` = `%1`.`_%3` WHERE `%0`.`%2` = `%1`.`%3`")
+                QSqlQuery(QString("UPDATE `%0` AS `slave`, `%1` AS `master` SET `slave`.`_%2` = `master`.`_%3` "
+                                  "WHERE `slave`.`%2` = `master`.`%3` %4")
                           .arg(table)
                           .arg(masterTable)
                           .arg(column)
-                          .arg(masterColumn));
+                          .arg(masterColumn)
+                          .arg(condition));
                 db.commit();
             }
         }
     }
     else
     {
-        QStringList columns = m_columns[ColumnPair(group, str)];
+        QStringList columns = m_columns[StringPair(group, str)];
 
         for (auto& column : columns)
         {
@@ -208,6 +234,8 @@ void MainWindow::reorderSlaves(QString str)
                 }
             }
 
+            QString condition = m_conditions[StringPair(str, column)];
+
             db.transaction();
             QSqlQuery(QString("ALTER TABLE `%0` ADD COLUMN `_%1` %2 DEFAULT 0 NOT NULL AFTER `%1`")
                       .arg(str)
@@ -216,11 +244,13 @@ void MainWindow::reorderSlaves(QString str)
             QSqlQuery(QString("UPDATE `%0` SET `_%1` = `%1`")
                       .arg(str)
                       .arg(column));
-            QSqlQuery(QString("UPDATE `%0`, `%1` SET `%0`.`_%2` = `%1`.`_%3` WHERE `%0`.`%2` = `%1`.`%3`")
+            QSqlQuery(QString("UPDATE `%0` AS `slave`, `%1` AS `master` SET `slave`.`_%2` = `master`.`_%3` "
+                              "WHERE `slave`.`%2` = `master`.`%3` %4")
                       .arg(str)
                       .arg(masterTable)
                       .arg(column)
-                      .arg(masterColumn));
+                      .arg(masterColumn)
+                      .arg(condition));
             db.commit();
         }
     }
