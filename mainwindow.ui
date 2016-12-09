@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>402</width>
-    <height>180</height>
+    <width>405</width>
+    <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,40 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="5" column="0">
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="text">
+       <string>Flush</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0" colspan="5">
      <widget class="QComboBox" name="comboBox"/>
-    </item>
-    <item row="1" column="0" colspan="5">
-     <widget class="QLineEdit" name="lineEdit"/>
     </item>
     <item row="3" column="0" colspan="5">
      <widget class="QProgressBar" name="progressBar">
       <property name="value">
        <number>24</number>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="5">
+     <widget class="QLineEdit" name="lineEdit"/>
+    </item>
+    <item row="2" column="0" colspan="5">
+     <widget class="QComboBox" name="comboBox_2"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Current slave</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="text">
+       <string>All slaves</string>
       </property>
      </widget>
     </item>
@@ -35,27 +59,38 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>Current slave</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="5">
-     <widget class="QComboBox" name="comboBox_2"/>
-    </item>
-    <item row="4" column="2">
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="text">
-       <string>All slaves</string>
-      </property>
-     </widget>
-    </item>
     <item row="4" column="3" colspan="2">
      <widget class="QPushButton" name="pushButton">
       <property name="text">
        <string>All</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="text">
+       <string>Flush</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3" colspan="2">
+     <widget class="QPushButton" name="pushButton_8">
+      <property name="text">
+       <string>Flush</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QPushButton" name="pushButton_7">
+      <property name="text">
+       <string>Flush</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="5">
+     <widget class="QPushButton" name="pushButton_9">
+      <property name="text">
+       <string>Do all</string>
       </property>
      </widget>
     </item>

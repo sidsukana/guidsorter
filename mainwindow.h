@@ -29,12 +29,19 @@ class MainWindow : public QMainWindow
 
         void reorderMaster();
         void reorderSlaves(QString str = QString());
+        void flushMasterFields();
+        void flushSlavesFields(QString str = QString());
 
     public slots:
+        void slotDoAll();
         void slotAll();
+        void slotFlushAll();
         void slotMaster();
         void slotCurrentSlave();
+        void slotFlushMaster();
+        void slotFlushCurrentSlave();
         void slotAllSlaves();
+        void slotFlushAllSlaves();
         void slotChangeTablesGroup(int index);
 
     private:

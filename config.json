@@ -1,6 +1,6 @@
 {
     "Database": {
-        "hostname": "localhost",
+        "hostname": "",
         "port": 3306,
         "username": "",
         "password": "",
@@ -93,7 +93,7 @@
                 "columns": [ "item_guid" ]
             },
             "character_inventory": {
-                "columns": [ "item" ]
+                "columns": [ "item", "bag" ]
             },
             "item_loot": {
                 "columns": [ "guid" ]
@@ -109,6 +109,54 @@
             },
             "petition_sign": {
                 "columns": [ "petitionguid" ]
+            }
+        },
+        "Mail": {
+            "mail": {
+                "master": true,
+                "column": "id"
+            },
+            "mail_items": {
+                "columns": [ "mail_id" ]
+            }
+        },
+        "Pets": {
+            "character_pet": {
+                "master": true,
+                "column": "id"
+            },
+            "pet_aura": {
+                "columns": [ "guid" ]
+            },
+            "pet_spell": {
+                "columns": [ "guid" ]
+            }
+        },
+        "Texts": {
+            "item_text": {
+                "master": true,
+                "column": "id"
+            },
+            "item_instance": {
+                "columns": [ "text" ]
+            },
+            "mail": {
+                "columns": [ "itemTextId" ]
+            }
+        },
+        "Guilds": {
+            "guild": {
+                "master": true,
+                "column": "guildid"
+            },
+            "guild_eventlog": {
+                "columns": [ "guildid" ]
+            },
+            "guild_member": {
+                "columns": [ "guildid" ]
+            },
+            "guild_rank": {
+                "columns": [ "guildid" ]
             }
         }
     }
