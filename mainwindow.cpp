@@ -296,6 +296,7 @@ void MainWindow::flushMasterFields()
     QSqlDatabase db = QSqlDatabase::database();
 
     QMap<QString, QStringList> indexMap;
+    QMap<QString, bool> uniques;
     QSqlQuery result(QString("SHOW INDEX FROM `%0`").arg(masterTable));
     while (result.next())
     {
@@ -303,6 +304,7 @@ void MainWindow::flushMasterFields()
         QStringList indexColumns = indexMap[result.value(2).toString()];
         indexColumns << result.value(4).toString();
         indexMap[indexName] = indexColumns;
+        uniques[indexName] = !result.value(1).toBool();
     }
 
     QString query = QString("ALTER TABLE `%0` ").arg(masterTable);
@@ -351,7 +353,7 @@ void MainWindow::flushMasterFields()
                 query += "DROP INDEX " + QString("`%0`").arg(itr.key());
                 query += ", ";
 
-                if (itr.key() == "UNIQUE")
+                if (uniques[itr.key()])
                     query += "ADD UNIQUE INDEX " + QString("`%0`").arg(itr.key()) + " (";
                 else
                     query += "ADD INDEX " + QString("`%0`").arg(itr.key()) + " (";
@@ -388,6 +390,7 @@ void MainWindow::flushSlavesFields(QString str)
             QString table = ui->comboBox_2->itemText(i);
 
             QMap<QString, QStringList> indexMap;
+            QMap<QString, bool> uniques;
             QSqlQuery result(QString("SHOW INDEX FROM `%0`").arg(table));
             while (result.next())
             {
@@ -395,6 +398,7 @@ void MainWindow::flushSlavesFields(QString str)
                 QStringList indexColumns = indexMap[result.value(2).toString()];
                 indexColumns << result.value(4).toString();
                 indexMap[indexName] = indexColumns;
+                uniques[indexName] = !result.value(1).toBool();
             }
 
             QStringList columns = m_columns[StringPair(group, table)];
@@ -456,7 +460,7 @@ void MainWindow::flushSlavesFields(QString str)
                             query += "DROP INDEX " + QString("`%0`").arg(itr.key());
                             query += ", ";
 
-                            if (itr.key() == "UNIQUE")
+                            if (uniques[itr.key()])
                                 query += "ADD UNIQUE INDEX " + QString("`%0`").arg(itr.key()) + " (";
                             else
                                 query += "ADD INDEX " + QString("`%0`").arg(itr.key()) + " (";
@@ -482,6 +486,7 @@ void MainWindow::flushSlavesFields(QString str)
     else
     {
         QMap<QString, QStringList> indexMap;
+        QMap<QString, bool> uniques;
         QSqlQuery result(QString("SHOW INDEX FROM `%0`").arg(str));
         while (result.next())
         {
@@ -489,6 +494,7 @@ void MainWindow::flushSlavesFields(QString str)
             QStringList indexColumns = indexMap[result.value(2).toString()];
             indexColumns << result.value(4).toString();
             indexMap[indexName] = indexColumns;
+            uniques[indexName] = !result.value(1).toBool();
         }
 
         QStringList columns = m_columns[StringPair(group, str)];
@@ -550,7 +556,7 @@ void MainWindow::flushSlavesFields(QString str)
                         query += "DROP INDEX " + QString("`%0`").arg(itr.key());
                         query += ", ";
 
-                        if (itr.key() == "UNIQUE")
+                        if (uniques[itr.key()])
                             query += "ADD UNIQUE INDEX " + QString("`%0`").arg(itr.key()) + " (";
                         else
                             query += "ADD INDEX " + QString("`%0`").arg(itr.key()) + " (";
